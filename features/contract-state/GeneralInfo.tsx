@@ -37,7 +37,9 @@ const GeneralInfo = () => {
   const { empState } = EmpState.useContainer();
   const { activeSponsors } = EmpSponsors.useContainer();
   const { gcr } = Totals.useContainer();
-  const { latestPrice, sourceUrls } = PriceFeed.useContainer();
+  // const { latestPrice, sourceUrls } = PriceFeed.useContainer();
+  const { latestPrice } = PriceFeed.useContainer();
+  const sourceUrls: Array<string> = [];
   const { getEtherscanUrl } = Etherscan.useContainer();
   const {
     expirationTimestamp: expiry,
