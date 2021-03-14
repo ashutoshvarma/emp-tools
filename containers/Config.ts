@@ -6,7 +6,7 @@ import { ethers } from "ethers";
 type Network = ethers.providers.Network;
 export const config = (network: Network | null) => {
   const infuraId =
-    process.env.NEXT_PUBLIC_INFURA_ID || "d5e29c9b9a9d4116a7348113f57770a8";
+    process.env.NEXT_PUBLIC_INFURA_ID || "a9481ee77959495ba427cbfd50102b0d";
   const infuraRpc = `https://${
     network ? network?.name : "mainnet"
   }.infura.io/v3/${infuraId}`;
@@ -15,7 +15,7 @@ export const config = (network: Network | null) => {
     onboardConfig: {
       apiKey:
         process.env.NEXT_PUBLIC_ONBOARD_API_KEY ||
-        "12153f55-f29e-4f11-aa07-90f10da5d778",
+        "f8722c69-d5fa-4c36-b410-661fd87d2e3c",
       onboardWalletSelect: {
         wallets: [
           { walletName: "metamask", preferred: true },
