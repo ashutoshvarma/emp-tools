@@ -5,7 +5,8 @@ import { getSimplePriceByContract } from "../utils/getCoinGeckoTokenPrice";
 
 import { ethers } from "ethers";
 import erc20 from "@studydefi/money-legos/erc20";
-import uma from "@studydefi/money-legos/uma";
+// import uma from "@studydefi/money-legos/uma";
+import empABI from "../ABI/EMP.json";
 
 import Connection from "./Connection";
 
@@ -34,27 +35,29 @@ const useDevMiningCalculator = () => {
   }, []);
 
   useEffect(() => {
-    if (provider == null) return;
-    if (empWhitelist == null) return;
-    if (totalRewards == null) return;
-    const devMiningCalculator = DevMiningCalculator({
-      ethers,
-      getPrice: getSimplePriceByContract,
-      erc20Abi: erc20.abi,
-      empAbi: uma.expiringMultiParty.abi,
-      provider,
-    });
-    setCalculator(devMiningCalculator);
+    // Disable DevMining Feature
+    return;
+    // if (provider == null) return;
+    // if (empWhitelist == null) return;
+    // if (totalRewards == null) return;
+    // const devMiningCalculator = DevMiningCalculator({
+    //   ethers,
+    //   getPrice: getSimplePriceByContract,
+    //   erc20Abi: erc20.abi,
+    //   empAbi: empABI,
+    //   provider,
+    // });
+    // setCalculator(devMiningCalculator);
 
-    devMiningCalculator
-      .estimateDevMiningRewards({
-        totalRewards,
-        empWhitelist,
-      })
-      .then((rewards) => setRewards(new Map(rewards)))
-      .catch((err) => {
-        console.error(err, "Error calculating dev mining rewards");
-      });
+    // devMiningCalculator
+    //   .estimateDevMiningRewards({
+    //     totalRewards,
+    //     empWhitelist,
+    //   })
+    //   .then((rewards) => setRewards(new Map(rewards)))
+    //   .catch((err) => {
+    //     console.error(err, "Error calculating dev mining rewards");
+    //   });
   }, [provider, totalRewards, empWhitelist]);
 
   return {
