@@ -59,6 +59,7 @@ const useContractState = () => {
 
   // get state from EMP
   const queryState = async () => {
+    // console.log({ emp: emp });
     if (emp === null) {
       setState(initState);
     }
@@ -70,9 +71,12 @@ const useContractState = () => {
         emp.priceIdentifier(),
         emp.tokenCurrency(),
         emp.collateralRequirement(),
-        emp.disputeBondPct(),
-        emp.disputerDisputeRewardPct(),
-        emp.sponsorDisputeRewardPct(),
+        // emp.disputeBondPct(),                          //
+        // emp.disputerDisputeRewardPct(),                // Old ABI methods
+        // emp.sponsorDisputeRewardPct(),                 //
+        emp.disputeBondPercentage(),
+        emp.disputerDisputeRewardPercentage(),
+        emp.sponsorDisputeRewardPercentage(),
         emp.minSponsorTokens(),
         emp.timerAddress(),
         emp.cumulativeFeeMultiplier(),
@@ -85,6 +89,7 @@ const useContractState = () => {
         emp.finder(),
         emp.expiryPrice(),
       ]);
+      // console.log({ res: res });
 
       const newState: ContractState = {
         expirationTimestamp: res[0] as BigNumber,
