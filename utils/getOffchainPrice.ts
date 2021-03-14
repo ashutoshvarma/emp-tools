@@ -119,61 +119,64 @@ export function isPricefeedInvertedFromTokenSymbol(symbol: string | null) {
 }
 
 export const getOffchainPriceFromTokenSymbol = async (symbol: string) => {
-  let identifierParams = getPricefeedParamsFromTokenSymbol(symbol);
-  if (identifierParams === null) {
-    console.error(
-      `Missing identifier parameters for token with symbol ${symbol}`
-    );
-    return null;
-  } else {
-    const prices: (number | null)[] = await Promise.all(
-      identifierParams.source.map(async (url: string) => {
-        try {
-          const response = await fetch(url);
-          const json = await response.json();
+  // console.log({ symbol: symbol });
+  return 1;
 
-          switch (true) {
-            case url.includes("coinbase"):
-              return _getCoinbasePriceFromJSON(json);
-            case url.includes("binance"):
-              return _getBinancePriceFromJSON(json);
-            case url.includes("kraken"):
-              return _getKrakenPriceFromJSON(json);
-            case url.includes("bitstamp"):
-              return _getBitstampPriceFromJSON(json);
-            default:
-              return null;
-          }
-        } catch (err) {
-          console.error(
-            `Failed to get price for for token with symbol ${symbol}, url=${url}`,
-            err
-          );
-          return null;
-        }
-      })
-    );
+  // let identifierParams = getPricefeedParamsFromTokenSymbol(symbol);
+  // if (identifierParams === null) {
+  //   console.error(
+  //     `Missing identifier parameters for token with symbol ${symbol}`
+  //   );
+  //   return null;
+  // } else {
+  //   const prices: (number | null)[] = await Promise.all(
+  //     identifierParams.source.map(async (url: string) => {
+  //       try {
+  //         const response = await fetch(url);
+  //         const json = await response.json();
 
-    const validPrices = prices.filter(isValidPrice);
-    if (validPrices.length > 0) {
-      // Sort in ascending order (lowest first), and return the median index.
-      const mid = Math.floor(validPrices.length / 2);
-      validPrices.sort((a: number, b: number) => a - b);
-      let medianPrice;
-      if (validPrices.length % 2 === 0) {
-        medianPrice = (validPrices[mid - 1] + validPrices[mid]) / 2;
-      } else {
-        medianPrice = validPrices[mid];
-      }
+  //         switch (true) {
+  //           case url.includes("coinbase"):
+  //             return _getCoinbasePriceFromJSON(json);
+  //           case url.includes("binance"):
+  //             return _getBinancePriceFromJSON(json);
+  //           case url.includes("kraken"):
+  //             return _getKrakenPriceFromJSON(json);
+  //           case url.includes("bitstamp"):
+  //             return _getBitstampPriceFromJSON(json);
+  //           default:
+  //             return null;
+  //         }
+  //       } catch (err) {
+  //         console.error(
+  //           `Failed to get price for for token with symbol ${symbol}, url=${url}`,
+  //           err
+  //         );
+  //         return null;
+  //       }
+  //     })
+  //   );
 
-      // Return inverted price if appropriate
-      if (identifierParams.invertedPrice) {
-        return 1 / medianPrice;
-      } else {
-        return medianPrice;
-      }
-    } else {
-      return null;
-    }
-  }
+  //   const validPrices = prices.filter(isValidPrice);
+  //   if (validPrices.length > 0) {
+  //     // Sort in ascending order (lowest first), and return the median index.
+  //     const mid = Math.floor(validPrices.length / 2);
+  //     validPrices.sort((a: number, b: number) => a - b);
+  //     let medianPrice;
+  //     if (validPrices.length % 2 === 0) {
+  //       medianPrice = (validPrices[mid - 1] + validPrices[mid]) / 2;
+  //     } else {
+  //       medianPrice = validPrices[mid];
+  //     }
+
+  //     // Return inverted price if appropriate
+  //     if (identifierParams.invertedPrice) {
+  //       return 1 / medianPrice;
+  //     } else {
+  //       return medianPrice;
+  //     }
+  //   } else {
+  //     return null;
+  //   }
+  // }
 };
