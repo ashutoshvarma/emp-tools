@@ -53,6 +53,10 @@ function isValidPrice<Price>(value: Price | null): value is Price {
 }
 
 export const PRICEFEED_PARAMS: PricefeedParamsMap = {
+  umausd: {
+    invertedPrice: false,
+    source: ["https://api.pro.coinbase.com/products/UMA-USD/trades?limit=1"],
+  },
   compusd: {
     invertedPrice: false,
     source: ["https://api.pro.coinbase.com/products/COMP-USD/trades?limit=1"],
@@ -86,6 +90,7 @@ export function getPricefeedParamsFromTokenSymbol(symbol: string | null) {
   // This returns whichever "case" expression matches the conditional in `switch`.
   // In this case, whichever "case" expression evaluates to "true".
   // Source: https://stackoverflow.com/questions/4082204/javascript-conditional-switch-statement
+  // console.log({ symbol: symbol });
   switch (true) {
     case symbol?.includes("yCOMP"):
       return PRICEFEED_PARAMS.compusd;
@@ -103,6 +108,8 @@ export function getPricefeedParamsFromTokenSymbol(symbol: string | null) {
       return PRICEFEED_PARAMS.usdbtc;
     case symbol?.includes("YD-ETH"):
       return PRICEFEED_PARAMS.usdeth;
+    case symbol?.includes("UMAc"):
+      return PRICEFEED_PARAMS.umausd;
     default:
       return null;
   }

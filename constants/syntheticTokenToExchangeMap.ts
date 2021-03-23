@@ -13,11 +13,13 @@ interface ExchangeLinkMap {
 enum EXCHANGES {
   UNISWAP,
   BALANCER,
+  SUSHISWAP,
 }
 
 export const EXCHANGE_NAMES_MAP: ExchangeNameMap = {
   [EXCHANGES.UNISWAP]: "Uniswap",
   [EXCHANGES.BALANCER]: "Balancer",
+  [EXCHANGES.SUSHISWAP]: "Sushiswap",
 };
 
 // Maps synthetic tokens to the exchange where they and their collateral can be traded.
@@ -25,10 +27,13 @@ const TOKEN_TO_EXCHANGE_MAP: TokenExchangeMap = {
   ycomp: EXCHANGES.UNISWAP,
   ethbtc: EXCHANGES.UNISWAP,
   yusd: EXCHANGES.BALANCER,
+  umac: EXCHANGES.SUSHISWAP,
 };
 
 // Maps exchange types to functions that can be used to retrieve the exchange's swap URL for a chosen token.
 export const EXCHANGE_LINK_MAP: ExchangeLinkMap = {
+  [EXCHANGES.SUSHISWAP]: (tokenAddress) =>
+    `https://app.sushi.com/swap?outputCurrency=${tokenAddress}`,
   [EXCHANGES.UNISWAP]: (tokenAddress) =>
     `https://app.uniswap.org/#/swap?outputCurrency=${tokenAddress}`,
   [EXCHANGES.BALANCER]: (tokenAddress) =>
@@ -50,6 +55,8 @@ export const getExchangeTypeFromTokenSymbol = (symbol: string | null) => {
       return TOKEN_TO_EXCHANGE_MAP.yusd;
     case symbol?.includes("YD"):
       return TOKEN_TO_EXCHANGE_MAP.yusd;
+    case symbol?.includes("UMAc"):
+      return TOKEN_TO_EXCHANGE_MAP.umac;
     default:
       return null;
   }
