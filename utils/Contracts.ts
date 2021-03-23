@@ -12,6 +12,7 @@ export const Contracts: { [networkId: number]: ContractArguments[] } = {
     ["0x3605Ec11BA7bD208501cbb24cd890bC58D2dbA56", "EMP", "1"], // uUSDwETH-DEC
     ["0xE4256C47a3b27a969F25de8BEf44eCA5F2552bD5", "EMP", "1"], // YD-ETH-MAR21
     ["0x1c3f1A342c8D9591D9759220d114C685FD1cF6b8", "EMP", "1"], // YD-BTC-MAR21
+    ["0x02bD62088A02668F29102B06E4925791Cd0fe4C5", "EMP", "1"], // UMAc35-0421
   ],
   42: [
     ["0x3366b8549047C66E985EcC43026ceD3E831e46A9", "EMP", "1"], // uUSDrBTC Kovan Sep20
