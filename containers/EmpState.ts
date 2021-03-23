@@ -70,9 +70,9 @@ const useContractState = () => {
         emp.priceIdentifier(),
         emp.tokenCurrency(),
         emp.collateralRequirement(),
-        emp.disputeBondPct(),
-        emp.disputerDisputeRewardPct(),
-        emp.sponsorDisputeRewardPct(),
+        emp.disputeBondPercentage(),
+        emp.disputerDisputeRewardPercentage(),
+        emp.sponsorDisputeRewardPercentage(),
         emp.minSponsorTokens(),
         emp.timerAddress(),
         emp.cumulativeFeeMultiplier(),
@@ -108,7 +108,7 @@ const useContractState = () => {
         finderAddress: res[17] as string, // address
         expiryPrice: res[18] as BigNumber,
       };
-
+      // console.log(newState);
       setState(newState);
     }
   };

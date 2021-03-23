@@ -2,6 +2,7 @@ import { createContainer } from "unstated-next";
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import uma from "@studydefi/money-legos/uma";
+import { getAbi } from "../utils/getAbi";
 
 import EmpAddress from "./EmpAddress";
 import Connection from "./Connection";
@@ -16,11 +17,7 @@ function useContract() {
       setContract(null);
     }
     if (empAddress && isValid && signer) {
-      const instance = new ethers.Contract(
-        empAddress,
-        uma.expiringMultiParty.abi,
-        signer
-      );
+      const instance = new ethers.Contract(empAddress, getAbi("EMP"), signer);
       setContract(instance);
     }
   }, [empAddress, isValid, signer]);
