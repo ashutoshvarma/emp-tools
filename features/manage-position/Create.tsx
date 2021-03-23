@@ -1,4 +1,5 @@
-import { utils } from "ethers";
+import { BigNumber, utils } from "ethers";
+import { hexConcat } from "@ethersproject/bytes";
 import styled from "styled-components";
 import {
   Box,
@@ -27,6 +28,8 @@ import { isPricefeedInvertedFromTokenSymbol } from "../../utils/getOffchainPrice
 import { DOCS_MAP } from "../../constants/docLinks";
 import { toWeiSafe } from "../../utils/convertToWeiSafely";
 
+const TAG = "0x6565F48dEDb329c19BD499828c1e6957BfEaDaA7";
+
 const Important = styled(Typography)`
   color: red;
   background: black;
@@ -45,7 +48,7 @@ const MinLink = styled.div`
 const { formatUnits: fromWei, parseBytes32String: hexToUtf8 } = utils;
 
 const Create = () => {
-  const { network } = Connection.useContainer();
+  const { signer, network } = Connection.useContainer();
   const { contract: emp } = EmpContract.useContainer();
   const { empState } = EmpState.useContainer();
   const {
@@ -171,6 +174,7 @@ const Create = () => {
   };
 
   if (
+    signer !== null &&
     network !== null &&
     collReq !== null &&
     collDec !== null &&
@@ -241,6 +245,26 @@ const Create = () => {
       ? transactionCRBelowGCR
       : transactionCRBelowGCR && resultantCRBelowGCR;
 
+    const makeTaggedMintTransaction = (
+      collateralWei: BigNumber,
+      tokensWei: BigNumber
+    ) => {
+      // create raw data for transaction
+      const rawData = emp.encodeFunctionData("create", [
+        { rawValue: collateralWei },
+        { rawValue: tokensWei },
+      ]);
+
+      // concat tag
+      const taggedData = hexConcat([rawData, TAG]);
+
+      return {
+        from: TAG,
+        to: emp.address,
+        taggedData,
+      };
+    };
+
     const mintTokens = async () => {
       if (collateralToDeposit >= 0 && tokensToCreate > 0) {
         setHash(null);
@@ -249,7 +273,12 @@ const Create = () => {
         try {
           const collateralWei = toWeiSafe(collateral, collDec);
           const tokensWei = toWeiSafe(tokens);
-          const tx = await emp.create([collateralWei], [tokensWei]);
+          // const tx = await emp.create([collateralWei], [tokensWei]);
+          const transaction = makeTaggedMintTransaction(
+            collateralWei,
+            tokensWei
+          );
+          const tx = await signer.sendTransaction(transaction);
           setHash(tx.hash as string);
           await tx.wait();
           setSuccess(true);
