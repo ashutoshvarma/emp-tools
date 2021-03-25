@@ -1,9 +1,10 @@
 import { createContainer } from "unstated-next";
 import { useState, useEffect } from "react";
-import { BigNumber, Bytes } from "ethers";
+import { BigNumber, Bytes, ethers } from "ethers";
 
 import Connection from "./Connection";
 import EmpContract from "./EmpContract";
+import CCLibContract from "./CCLibContract";
 
 interface ContractState {
   expirationTimestamp: BigNumber | null;
@@ -26,6 +27,7 @@ interface ContractState {
   contractState: number | null;
   finderAddress: string | null;
   expiryPrice: BigNumber | null;
+  strikePrice: BigNumber | null;
 }
 
 const initState = {
@@ -49,11 +51,13 @@ const initState = {
   contractState: null,
   finderAddress: null,
   expiryPrice: null,
+  strikePrice: null,
 };
 
 const useContractState = () => {
   const { block$ } = Connection.useContainer();
   const { contract: emp } = EmpContract.useContainer();
+  const { cclib } = CCLibContract.useContainer();
 
   const [state, setState] = useState<ContractState>(initState);
 
@@ -86,6 +90,17 @@ const useContractState = () => {
         emp.expiryPrice(),
       ]);
 
+      let sPrice = null;
+      if (cclib) {
+        try {
+          sPrice = (await cclib.getStrikeForFinancialProduct(
+            emp.address
+          )) as BigNumber;
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
       const newState: ContractState = {
         expirationTimestamp: res[0] as BigNumber,
         collateralCurrency: res[1] as string, // address
@@ -107,8 +122,8 @@ const useContractState = () => {
         contractState: Number(res[16]),
         finderAddress: res[17] as string, // address
         expiryPrice: res[18] as BigNumber,
+        strikePrice: sPrice,
       };
-      // console.log(newState);
       setState(newState);
     }
   };
