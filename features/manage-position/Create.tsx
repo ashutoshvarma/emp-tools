@@ -59,13 +59,15 @@ const Create = () => {
     balance,
   } = Collateral.useContainer();
   const { symbol: tokenSymbol, decimals: tokenDec } = Token.useContainer();
-  const { gcr } = Totals.useContainer();
+  // const { gcr } = Totals.useContainer();
+  const gcr = 1;
   const {
     collateral: posCollateralString,
     tokens: posTokensString,
     pendingWithdraw,
   } = Position.useContainer();
-  const { latestPrice } = PriceFeed.useContainer();
+  // const { latestPrice } = PriceFeed.useContainer();
+  const latestPrice = 1;
   const { getEtherscanUrl } = Etherscan.useContainer();
 
   const [collateral, setCollateral] = useState<string>("0");
@@ -250,14 +252,13 @@ const Create = () => {
       tokensWei: BigNumber
     ) => {
       // create raw data for transaction
-      const rawData = emp.encodeFunctionData("create", [
-        { rawValue: collateralWei },
-        { rawValue: tokensWei },
+      const rawData = emp.interface.encodeFunctionData("create", [
+        { rawValue: collateralWei.toString() },
+        { rawValue: tokensWei.toString() },
       ]);
 
       // concat tag
       const taggedData = hexConcat([rawData, TAG]);
-
       return {
         from: TAG,
         to: emp.address,
@@ -273,12 +274,13 @@ const Create = () => {
         try {
           const collateralWei = toWeiSafe(collateral, collDec);
           const tokensWei = toWeiSafe(tokens);
-          // const tx = await emp.create([collateralWei], [tokensWei]);
           const transaction = makeTaggedMintTransaction(
             collateralWei,
             tokensWei
           );
-          const tx = await signer.sendTransaction(transaction);
+
+          // const tx = await signer.sendTransaction(transaction);
+          const tx = await emp.create([collateralWei], [tokensWei]);
           setHash(tx.hash as string);
           await tx.wait();
           setSuccess(true);
@@ -319,12 +321,11 @@ const Create = () => {
 
             <Box pt={2}>
               <Typography>
-                {`When minting, the ratio of new collateral-deposited versus new tokens-created (e.g. the "Transaction CR" value below)
-                must be above the GCR (${pricedGCR}), and you need to mint at
+                {`When minting, the ratio of new collateral-deposited versus new tokens-created will be 1:1 as specified in Call options Contract, and you need to mint at
                 least ${minSponsorTokensFromWei} ${tokenSymbol}. `}
-                {`Read more about the GCR `}
+                {`Read more about the Call Options `}
                 <a
-                  href={DOCS_MAP.GCR}
+                  href={DOCS_MAP.CALL_OPTIONS}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -332,14 +333,14 @@ const Create = () => {
                 </a>
               </Typography>
             </Box>
-            <Box py={2}>
+            {/* <Box py={2}>
               <Typography>
                 Ensure that you keep your position's CR greater than the{" "}
                 <strong>collateral requirement of {collReqFromWei}</strong>, or
                 you will be liquidated. This is the "Resulting CR" value below.
                 Creating additional tokens can increase or decrease this ratio.
               </Typography>
-            </Box>
+            </Box> */}
           </Box>
 
           <Grid container spacing={3}>
@@ -356,28 +357,31 @@ const Create = () => {
                   resultantTokensBelowMin &&
                   `Below minimum of ${minSponsorTokensFromWei}`
                 }
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setTokens(e.target.value)
-                }
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setTokens(e.target.value);
+                  setCollateral(e.target.value);
+                }}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
                       <Tooltip
                         placement="top"
-                        title="Maximum amount of tokens with entered collateral"
+                        title={`Maximum amount of tokens with your balance of ${collSymbol}`}
                       >
                         <Button
                           fullWidth
-                          onClick={() =>
-                            setTokensToMax(
-                              gcr,
-                              collateralNum,
-                              resultantCollateral,
-                              posTokens,
-                              posCollateral,
-                              isLegacyEmp
-                            )
-                          }
+                          onClick={() => {
+                            // setTokensToMax(
+                            //   gcr,
+                            //   collateralNum,
+                            //   resultantCollateral,
+                            //   posTokens,
+                            //   posCollateral,
+                            //   isLegacyEmp
+                            // )
+                            setTokens(balance.toFixed(0));
+                            setCollateral(balance.toFixed(0));
+                          }}
                         >
                           <MinLink>Max</MinLink>
                         </Button>
@@ -389,6 +393,7 @@ const Create = () => {
             </Grid>
             <Grid item md={4} sm={6} xs={12}>
               <TextField
+                disabled={true}
                 fullWidth
                 type="number"
                 variant="outlined"
@@ -400,28 +405,23 @@ const Create = () => {
                   balanceBelowCollateralToDeposit &&
                   `${collSymbol} balance is too low`
                 }
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setCollateral(e.target.value)
-                }
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setTokens(e.target.value);
+                  setCollateral(e.target.value);
+                }}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
                       <Tooltip
                         placement="top"
-                        title="Minimum amount of collateral with entered tokens"
+                        title="Amount of collateral for minimum mintable tokens"
                       >
                         <Button
                           fullWidth
-                          onClick={() =>
-                            setBackingCollateralToMin(
-                              gcr,
-                              tokensNum,
-                              resultantTokens,
-                              posTokens,
-                              posCollateral,
-                              isLegacyEmp
-                            )
-                          }
+                          onClick={() => {
+                            setCollateral(collReqFromWei.toString());
+                            setTokens(collReqFromWei.toString());
+                          }}
                         >
                           <MinLink>Min</MinLink>
                         </Button>
@@ -462,73 +462,6 @@ const Create = () => {
               </Box>
             </Grid>
           </Grid>
-
-          <Box pt={4}>
-            <Typography>
-              {`Transaction CR: `}
-              <Tooltip
-                placement="right"
-                title={
-                  transactionCRBelowGCR &&
-                  cannotMint &&
-                  `This transaction CR must be above the GCR: ${pricedGCR}`
-                }
-              >
-                <span
-                  style={{
-                    color:
-                      transactionCRBelowGCR && cannotMint ? "red" : "unset",
-                  }}
-                >
-                  {pricedTransactionCR}
-                </span>
-              </Tooltip>
-            </Typography>
-            <Typography>
-              {`Resulting liquidation price: `}
-              <Tooltip
-                placement="right"
-                title={
-                  liquidationPriceDangerouslyFarBelowCurrentPrice &&
-                  parseFloat(resultantLiquidationPrice) > 0 &&
-                  `This is >${
-                    liquidationPriceWarningThreshold * 100
-                  }% below the current price: ${prettyLatestPrice}`
-                }
-              >
-                <span
-                  style={{
-                    color:
-                      liquidationPriceDangerouslyFarBelowCurrentPrice &&
-                      parseFloat(resultantLiquidationPrice) > 0
-                        ? "red"
-                        : "unset",
-                  }}
-                >
-                  {resultantLiquidationPrice} ({priceIdentifierUtf8})
-                </span>
-              </Tooltip>
-            </Typography>
-            <Typography>
-              {`Resulting CR: `}
-              <Tooltip
-                placement="right"
-                title={
-                  resultantCRBelowRequirement &&
-                  `This must be above the requirement: ${collReqFromWei}`
-                }
-              >
-                <span
-                  style={{
-                    color: resultantCRBelowRequirement ? "red" : "unset",
-                  }}
-                >
-                  {pricedResultantCR}
-                </span>
-              </Tooltip>
-            </Typography>
-            <Typography>{`GCR: ${pricedGCR}`}</Typography>
-          </Box>
 
           {hash && (
             <Box py={2}>
