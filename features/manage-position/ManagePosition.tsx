@@ -13,7 +13,8 @@ import YourPosition from "./YourPosition";
 import YourLiquidations from "./YourLiquidations";
 import YourWallet from "./YourWallet";
 
-export type Method = "create" | "deposit" | "withdraw" | "redeem" | "settle";
+// export type Method = "create" | "deposit" | "withdraw" | "redeem" | "settle";
+export type Method = "create" | "withdraw" | "redeem" | "settle";
 const DEFAULT_METHOD = "create";
 
 const Manager = () => {
@@ -41,7 +42,7 @@ const Manager = () => {
         <MethodSelector method={method} handleChange={handleChange} />
 
         {method === "create" && <Create />}
-        {method === "deposit" && <Deposit />}
+        {/* {method === "deposit" && <Deposit />} */}
         {method === "withdraw" && <Withdraw />}
         {method === "redeem" && <Redeem />}
         {method === "settle" && <SettleExpired />}

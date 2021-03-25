@@ -153,9 +153,6 @@ const Redeem = () => {
             By redeeming your synthetic tokens, you will pay back a portion of
             your debt and receive a proportional part of your collateral.
             <br></br>
-            <br></br>
-            <strong>Note:</strong> this will not change the collateralization
-            ratio of your position or its liquidation price.
           </Typography>
           <br></br>
           <Typography>

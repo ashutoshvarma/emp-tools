@@ -176,6 +176,13 @@ const SettleExpired = () => {
             value of outstanding <strong>{tokenSymbol}</strong> debt.
             <br></br>
             <br></br>
+            {`Contract can settle in two outcomes.`}
+            <br></br>
+            {`1. If the strike price < Current Price at the time of Expiry then, token holders will receive the Collateral Currency worth (Current Price - Strike Price)/(Current Price)and the rest of the collateral can be redeemed by Token Sponsors.`}
+            <br></br>
+            {`2. If the strike price > Current Price at the time of Expiry then, token holders will not receive anything and Token Sponsors will get all of their Collateral Currency and Synth token will be worthless.`}
+            <br></br>
+            <br></br>
             Learn more about the settlement process{" "}
             <a
               href={DOCS_MAP.EXPIRY_SETTLEMENT}

@@ -138,22 +138,22 @@ const YourPosition = () => {
               <Label>Token debt: </Label>
               {`${_tokens} ${_tokenSymbol}`}
             </Status>
-            <Status>
+            {/* <Status>
               <Label>Collateral ratio (CR): </Label>
               {`${pricedCR}`}
-            </Status>
-            <Status>
+            </Status> */}
+            {/* <Status>
               <Label>Liquidation price: </Label>
               {`${liquidationPrice} (${priceIdUtf8})`}
-            </Status>
-            <Status>
+            </Status> */}
+            {/* <Status>
               <Label>Pending withdrawal request: </Label>
               {`${_pendingWithdraw}`}
             </Status>
             <Status>
               <Label>Requested withdrawal amount: </Label>
               {`${_withdrawAmt}`}
-            </Status>
+            </Status> */}
           </Grid>
           <Grid item md={6} xs={12}>
             <Typography variant="h5">Contract Info</Typography>
@@ -162,14 +162,14 @@ const YourPosition = () => {
               {_latestPrice}
             </Status>
 
-            <Status>
+            {/* <Status>
               <Label>Global collateral ratio (GCR): </Label>
               {`${pricedGCR}`}
-            </Status>
-            <Status>
+            </Status> */}
+            {/* <Status>
               <Label>Collateral requirement: </Label>
               {`${collReqFromWei}`}
-            </Status>
+            </Status> */}
           </Grid>
         </Grid>
       </Container>
