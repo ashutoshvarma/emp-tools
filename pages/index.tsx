@@ -288,6 +288,16 @@ function EmpMainPage({ contract }: { contract: ContractInfo }) {
               >
                 here
               </a>
+              .<br></br>
+              <br></br>
+              Read More about it{" "}
+              <a
+                href="https://medium.com/uma-project/uma-call-options-now-live-da8dcf080319"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                here
+              </a>
               .
             </Typography>
           </Blurb>
