@@ -13,4 +13,6 @@ export const DOCS_MAP: DocLinkMap = {
     "https://docs.umaproject.org/synthetic-tokens/expiring-synthetic-tokens#redeeming-after-expiry",
   FINAL_FEE:
     "https://docs.umaproject.org/synthetic-tokens/expiring-synthetic-tokens#liquidation-and-dispute",
+  CALL_OPTIONS:
+    "https://medium.com/uma-project/uma-call-options-now-live-da8dcf080319",
 };
