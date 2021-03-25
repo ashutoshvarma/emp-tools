@@ -260,17 +260,19 @@ function EmpMainPage({ contract }: { contract: ContractInfo }) {
         <>
           <Blurb>
             <Typography>
-              The Expiring Multi Party (EMP) is{" "}
+              Call Options is an Expiring Multi Party (EMP) made by{" "}
               <a
                 href="https://umaproject.org/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 UMA
-              </a>
-              's most current financial smart contract template. This UI is a
-              community-made tool to make interfacing with the protocol easier,
-              please use at your own risk. The source code can be viewed{" "}
+              </a>{" "}
+              which gives the buyer the right, but not the obligation to buy an
+              asset at a specified price (strike) and a specific time period
+              (expiry). This UI is a community-made tool to make interfacing
+              with the protocol easier, please use at your own risk. The source
+              code can be viewed{" "}
               <a
                 href="https://github.com/UMAprotocol/emp-tools"
                 target="_blank"

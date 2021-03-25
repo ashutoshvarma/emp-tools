@@ -203,23 +203,13 @@ const AllSponsors = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>
+                <TableCell align="center">
                   <strong>
                     Sponsor
                     <br /> Address
                   </strong>
                 </TableCell>
-                <TableCell align="right">
-                  <strong>
-                    <SortableTableColumnHeader
-                      sortField={SORT_FIELD.COLLATERAL}
-                    >
-                      Collateral
-                      <br />({collSymbol}){" "}
-                    </SortableTableColumnHeader>
-                  </strong>
-                </TableCell>
-                <TableCell align="right">
+                <TableCell align="center">
                   <strong>
                     <SortableTableColumnHeader sortField={SORT_FIELD.TOKENS}>
                       Synthetics
@@ -227,32 +217,6 @@ const AllSponsors = () => {
                     </SortableTableColumnHeader>
                   </strong>
                 </TableCell>
-                <TableCell align="right">
-                  <strong>
-                    <SortableTableColumnHeader sortField={SORT_FIELD.CRATIO}>
-                      Collateral
-                      <br /> Ratio{" "}
-                    </SortableTableColumnHeader>
-                  </strong>
-                </TableCell>
-                <Tooltip
-                  title={`This is the price that the identifier (${priceIdUtf8}) must ${
-                    invertedPrice ? "decrease" : "increase"
-                  } to in order for the position be liquidatable`}
-                  placement="top"
-                >
-                  <TableCell align="right">
-                    <strong>
-                      <SortableTableColumnHeader
-                        sortField={SORT_FIELD.LIQ_PRICE}
-                      >
-                        Liquidation
-                        <br /> Price{" "}
-                      </SortableTableColumnHeader>
-                    </strong>
-                  </TableCell>
-                </Tooltip>
-                <TableCell align="right"></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -260,29 +224,13 @@ const AllSponsors = () => {
                 const activeSponsor = activeSponsors[sponsor];
                 return (
                   <StyledTableRow key={sponsor}>
-                    <TableCell component="th" scope="row">
+                    <TableCell component="th" scope="row" align="center">
                       <a href={getEtherscanUrl(sponsor)} target="_blank">
                         {prettyAddress(sponsor)}
                       </a>
                     </TableCell>
-                    <TableCell align="right">
-                      {prettyBalance(Number(activeSponsor.collateral))}
-                    </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="center">
                       {prettyBalance(Number(activeSponsor.tokensOutstanding))}
-                    </TableCell>
-                    <TableCell align="right">
-                      {prettyBalance(Number(activeSponsor.cRatio))}
-                    </TableCell>
-                    <TableCell align="right">
-                      {prettyBalance(Number(activeSponsor.liquidationPrice))}
-                    </TableCell>
-                    <TableCell align="right">
-                      <MoreInfo
-                        onClick={() => handleOpenActionsDialog(sponsor)}
-                      >
-                        ⋮
-                      </MoreInfo>
                     </TableCell>
                   </StyledTableRow>
                 );

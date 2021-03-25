@@ -1,13 +1,18 @@
 import styled from "styled-components";
+import { ethers } from "ethers";
+
 import { Box, Grid, Typography, Button } from "@material-ui/core";
 
 import TotalsContainer from "../../containers/Totals";
 import Collateral from "../../containers/Collateral";
 import Token from "../../containers/Token";
 import Etherscan from "../../containers/Etherscan";
+import EmpState from "../../containers/EmpState";
 
 import Connection from "../../containers/Connection";
 import { getExchangeInfo } from "../../utils/getExchangeLinks";
+
+const fromWei = ethers.utils.formatUnits;
 
 const DataBox = styled(Box)`
   border: 1px solid #434343;
@@ -45,6 +50,11 @@ const White = styled.span`
 
 const Totals = () => {
   const { provider } = Connection.useContainer();
+  const { empState } = EmpState.useContainer();
+  const { strikePrice, expirationTimestamp: expiry } = empState;
+  const sPrice =
+    strikePrice !== null ? fromWei(strikePrice.toString()).toString() : "N/A";
+
   const { totalCollateral, totalTokens } = TotalsContainer.useContainer();
   const {
     symbol: collSymbol,
@@ -63,8 +73,21 @@ const Totals = () => {
     exchangeInfo !== undefined &&
     collAddress !== null &&
     tokenAddress !== null &&
-    provider !== null
+    provider !== null &&
+    expiry !== null
   ) {
+    const expiryTimestamp = expiry.toString();
+    const expiryDate = new Date(expiry.toNumber() * 1000).toLocaleString(
+      "en-GB",
+      {
+        timeZone: "UTC",
+        // dateStyle: "full",
+        month: "short",
+        year: "2-digit",
+        day: "2-digit",
+      }
+    );
+
     const prettyTotalCollateral = Number(totalCollateral).toLocaleString(
       undefined,
       {
@@ -111,7 +134,9 @@ const Totals = () => {
       getExchangeLinkCollateral,
       getExchangeLinkToken,
       exchangeName,
-      addTokenToMetamask
+      addTokenToMetamask,
+      sPrice,
+      expiryDate
     );
   } else {
     return renderComponent();
@@ -127,42 +152,12 @@ const Totals = () => {
     getExchangeLinkCollateral: string = "",
     getExchangeLinkToken: string = "",
     exchangeName: string = "Uniswap",
-    addTokenToMetamask: any = null
+    addTokenToMetamask: any = null,
+    sPrice: string = "",
+    expiryDate: string = ""
   ) {
     return (
       <Grid container spacing={0}>
-        <Grid item md={6} xs={12}>
-          <DataBox>
-            <Typography variant="h4">
-              <strong>{prettyTotalCollateral}</strong>
-              <Small> {prettyCollSymbol}</Small>
-            </Typography>
-            <Label>
-              of <White>collateral</White> supplied
-            </Label>
-            <LinksContainer>
-              {collAddress !== "" && (
-                <SmallLink
-                  href={getEtherscanUrl(collAddress)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Etherscan
-                </SmallLink>
-              )}
-              {getExchangeLinkCollateral !== "" && (
-                <SmallLink
-                  href={getExchangeLinkCollateral}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {exchangeName}
-                </SmallLink>
-              )}
-            </LinksContainer>
-          </DataBox>
-        </Grid>
-
         <Grid item md={6} xs={12}>
           <DataBox>
             <Typography variant="h4">
@@ -199,6 +194,19 @@ const Totals = () => {
                 </SmallLink>
               )}
             </LinksContainer>
+          </DataBox>
+        </Grid>
+
+        <Grid item md={6} xs={12}>
+          <DataBox>
+            <Typography variant="h3">
+              <strong>{sPrice}</strong>
+              <Small> STRIKE </Small>
+            </Typography>
+            <Typography variant="h6">
+              <strong>{expiryDate}</strong>
+              <Small> EXPIRY </Small>
+            </Typography>
           </DataBox>
         </Grid>
       </Grid>

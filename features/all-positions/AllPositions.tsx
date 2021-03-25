@@ -38,15 +38,6 @@ const AllPositions = () => {
         </Box>
         <Box pt={4}>
           <AllSponsors />
-          <br></br>
-          <br></br>
-          <Checkbox
-            checked={showLiquidations}
-            onChange={handleChange}
-            inputProps={{ "aria-label": "primary checkbox" }}
-          />
-          Show Liquidations
-          {showLiquidations && <AllLiquidations />}
         </Box>
       </Box>
     );

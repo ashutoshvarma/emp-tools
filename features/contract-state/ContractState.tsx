@@ -32,9 +32,9 @@ const ContractState = () => {
           <Grid item md={6} xs={12}>
             <GeneralInfo />
           </Grid>
-          <Grid item md={6} xs={12}>
+          {/* <Grid item md={6} xs={12}>
             <DisputeParams />
-          </Grid>
+          </Grid> */}
         </Grid>
       </Box>
     </Box>
