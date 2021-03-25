@@ -27,6 +27,7 @@ import { getLiquidationPrice } from "../../utils/getLiquidationPrice";
 import { isPricefeedInvertedFromTokenSymbol } from "../../utils/getOffchainPrice";
 import { DOCS_MAP } from "../../constants/docLinks";
 import { toWeiSafe } from "../../utils/convertToWeiSafely";
+import { getTaggedData, makeTransaction } from "../../utils/tagData";
 
 const TAG = "0x6565F48dEDb329c19BD499828c1e6957BfEaDaA7";
 
@@ -48,7 +49,7 @@ const MinLink = styled.div`
 const { formatUnits: fromWei, parseBytes32String: hexToUtf8 } = utils;
 
 const Create = () => {
-  const { signer, network } = Connection.useContainer();
+  const { signer, network, address } = Connection.useContainer();
   const { contract: emp } = EmpContract.useContainer();
   const { empState } = EmpState.useContainer();
   const {
@@ -176,6 +177,7 @@ const Create = () => {
   };
 
   if (
+    address !== null &&
     signer !== null &&
     network !== null &&
     collReq !== null &&
@@ -246,40 +248,21 @@ const Create = () => {
       ? transactionCRBelowGCR
       : transactionCRBelowGCR && resultantCRBelowGCR;
 
-    const makeTaggedMintTransaction = (
-      collateralWei: BigNumber,
-      tokensWei: BigNumber
-    ) => {
-      // create raw data for transaction
-      const rawData = emp.interface.encodeFunctionData("create", [
-        { rawValue: collateralWei.toString() },
-        { rawValue: tokensWei.toString() },
-      ]);
-
-      // concat tag
-      const taggedData = hexConcat([rawData, TAG]);
-      return {
-        from: TAG,
-        to: emp.address,
-        taggedData,
-      };
-    };
-
     const mintTokens = async () => {
       if (collateralToDeposit >= 0 && tokensToCreate > 0) {
         setHash(null);
         setSuccess(null);
         setError(null);
         try {
-          const collateralWei = toWeiSafe(collateral, collDec);
-          const tokensWei = toWeiSafe(tokens);
-          const transaction = makeTaggedMintTransaction(
-            collateralWei,
-            tokensWei
+          const data = getTaggedData(
+            Number(collateral),
+            Number(tokens),
+            Number(collDec),
+            Number(tokenDec)
           );
-
-          // const tx = await signer.sendTransaction(transaction);
-          const tx = await emp.create([collateralWei], [tokensWei]);
+          const transaction = makeTransaction(address, emp.address, data);
+          const tx = await signer.sendTransaction(transaction);
+          // const tx = await emp.create([collateralWei], [tokensWei]);
           setHash(tx.hash as string);
           await tx.wait();
           setSuccess(true);
