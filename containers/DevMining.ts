@@ -6,6 +6,7 @@ import { getSimplePriceByContract } from "../utils/getCoinGeckoTokenPrice";
 import { ethers } from "ethers";
 import erc20 from "@studydefi/money-legos/erc20";
 import uma from "@studydefi/money-legos/uma";
+import { getAbi } from "../utils/getAbi";
 
 import Connection from "./Connection";
 
@@ -17,9 +18,9 @@ const useDevMiningCalculator = () => {
   const { provider } = Connection.useContainer();
   const [devMiningRewards, setRewards] = useState<Map<string, string> | null>();
   const [devMiningCalculator, setCalculator] = useState<any | null>();
-  const [empWhitelist, setEmpWhitelist] = useState<string[]>();
+  const [empWhitelis, setEmpWhitelist] = useState<string[]>();
   const [totalRewards, setTotalRewards] = useState<number>(defaultTotalRewards);
-
+  let empWhitelist: string[] | null = null;
   // pull latest whitelist
   useEffect(() => {
     fetch(empStatusUrl)
@@ -41,7 +42,7 @@ const useDevMiningCalculator = () => {
       ethers,
       getPrice: getSimplePriceByContract,
       erc20Abi: erc20.abi,
-      empAbi: uma.expiringMultiParty.abi,
+      empAbi: getAbi("EMP"),
       provider,
     });
     setCalculator(devMiningCalculator);
