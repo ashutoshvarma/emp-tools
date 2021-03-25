@@ -6,6 +6,7 @@ import "../utils/global.css";
 import { WithStylingProviders } from "../utils/styling";
 import Connection from "../containers/Connection";
 import EmpContract from "../containers/EmpContract";
+import CCLibContract from "../containers/CCLibContract";
 import EmpAddress from "../containers/EmpAddress";
 import SelectedContract from "../containers/SelectedContract";
 import EmpState from "../containers/EmpState";
@@ -36,37 +37,39 @@ const WithStateContainerProviders = ({ children }: IProps) => (
     <Connection.Provider>
       <EmpAddress.Provider>
         <EmpContract.Provider>
-          <WethContract.Provider>
-            <EmpState.Provider>
-              <Token.Provider>
-                <Collateral.Provider>
-                  <PriceFeed.Provider>
-                    <EmpSponsors.Provider>
-                      <Totals.Provider>
-                        <Etherscan.Provider>
-                          <Position.Provider>
-                            <Balancer.Provider>
-                              <DvmContracts.Provider>
-                                <DvmState.Provider>
-                                  <DevMining.Provider>
-                                    <ContractList.Provider>
-                                      <SelectedContract.Provider>
-                                        {children}
-                                      </SelectedContract.Provider>
-                                    </ContractList.Provider>
-                                  </DevMining.Provider>
-                                </DvmState.Provider>
-                              </DvmContracts.Provider>
-                            </Balancer.Provider>
-                          </Position.Provider>
-                        </Etherscan.Provider>
-                      </Totals.Provider>
-                    </EmpSponsors.Provider>
-                  </PriceFeed.Provider>
-                </Collateral.Provider>
-              </Token.Provider>
-            </EmpState.Provider>
-          </WethContract.Provider>
+          <CCLibContract.Provider>
+            <WethContract.Provider>
+              <EmpState.Provider>
+                <Token.Provider>
+                  <Collateral.Provider>
+                    <PriceFeed.Provider>
+                      <EmpSponsors.Provider>
+                        <Totals.Provider>
+                          <Etherscan.Provider>
+                            <Position.Provider>
+                              <Balancer.Provider>
+                                <DvmContracts.Provider>
+                                  <DvmState.Provider>
+                                    <DevMining.Provider>
+                                      <ContractList.Provider>
+                                        <SelectedContract.Provider>
+                                          {children}
+                                        </SelectedContract.Provider>
+                                      </ContractList.Provider>
+                                    </DevMining.Provider>
+                                  </DvmState.Provider>
+                                </DvmContracts.Provider>
+                              </Balancer.Provider>
+                            </Position.Provider>
+                          </Etherscan.Provider>
+                        </Totals.Provider>
+                      </EmpSponsors.Provider>
+                    </PriceFeed.Provider>
+                  </Collateral.Provider>
+                </Token.Provider>
+              </EmpState.Provider>
+            </WethContract.Provider>
+          </CCLibContract.Provider>
         </EmpContract.Provider>
       </EmpAddress.Provider>
     </Connection.Provider>

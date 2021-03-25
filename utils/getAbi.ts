@@ -7,6 +7,7 @@ import emp1 from "@uma/core-1-2/build/contracts/ExpiringMultiParty.json";
 import emp2 from "@uma/core-2-0/build/contracts/ExpiringMultiParty.json";
 import perp2 from "@uma/core-2-0/build/contracts/Perpetual.json";
 import erc20 from "@uma/core-2-0/build/contracts/ExpandedERC20.json";
+import cclib from "@uma/core-2-1/build/contracts/CoveredCallFinancialProductLibrary.json";
 
 type ContractType = {
   versions: string[];
@@ -34,6 +35,11 @@ export const Contracts: ContractType[] = [
     versions: ["latest"],
     names: ["Erc20"],
     abi: erc20.abi,
+  },
+  {
+    versions: ["2.1.0", "latest"],
+    names: ["CoveredCallLib", "CoveredCallFinancialProductLibrary", "CCLib"],
+    abi: cclib.abi,
   },
 ];
 
