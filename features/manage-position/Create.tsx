@@ -209,16 +209,15 @@ const Create = () => {
     // CR of new tokens to create. This must be > GCR according to https://github.com/UMAprotocol/protocol/blob/837869b97edef108fdf68038f54f540ca95cfb44/core/contracts/financial-templates/expiring-multiparty/PricelessPositionManager.sol#L409
     const transactionCR =
       tokensToCreate > 0 ? collateralToDeposit / tokensToCreate : 0;
-    const pricedTransactionCR =
-      latestPrice !== 0 ? (transactionCR / latestPrice).toFixed(4) : "0";
+    // const pricedTransactionCR =
+    //   latestPrice !== 0 ? (transactionCR / latestPrice).toFixed(4) : "0";
     // Resultant CR of position if new tokens were created by depositing chosen amount of collateral.
     // This is a useful data point for the user but has no effect on the contract's create transaction.
     const resultantCollateral = posCollateral + collateralToDeposit;
     const resultantTokens = posTokens + tokensToCreate;
     const resultantCR =
       resultantTokens > 0 ? resultantCollateral / resultantTokens : 0;
-    const pricedResultantCR =
-      latestPrice !== 0 ? (resultantCR / latestPrice).toFixed(4) : "0";
+    const pricedResultantCR = (resultantCR / latestPrice).toFixed(4);
     const resultantLiquidationPrice = getLiquidationPrice(
       resultantCollateral,
       resultantTokens,
@@ -229,7 +228,7 @@ const Create = () => {
       parseFloat(resultantLiquidationPrice) <
       (1 - liquidationPriceWarningThreshold) * latestPrice;
     // GCR: total contract collateral / total contract tokens.
-    const pricedGCR = latestPrice !== 0 ? (gcr / latestPrice).toFixed(4) : null;
+    // const pricedGCR = latestPrice !== 0 ? (gcr / latestPrice).toFixed(4) : null;
 
     // Error conditions for calling create:
     const balanceBelowCollateralToDeposit = balance < collateralToDeposit;
