@@ -3,11 +3,11 @@ import assert from "assert";
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 // inelegant imports, but this is the only way afaik to work in browser
-import emp1 from "@uma/core-1-2/build/contracts/ExpiringMultiParty.json";
-import emp2 from "@uma/core-2-0/build/contracts/ExpiringMultiParty.json";
-import perp2 from "@uma/core-2-0/build/contracts/Perpetual.json";
-import erc20 from "@uma/core-2-0/build/contracts/ExpandedERC20.json";
-import cclib from "@uma/core-2-1/build/contracts/CoveredCallFinancialProductLibrary.json";
+import emp1 from "../ABIs/EMP1.json";
+import emp2 from "../ABIs/EMP2.json";
+import perp2 from "../ABIs/Perpetual.json";
+import erc20 from "../ABIs/ExpandedERC20.json";
+import cclib from "../ABIs/CCLib.json";
 
 type ContractType = {
   versions: string[];
