@@ -19,7 +19,8 @@ function useContract() {
 
   const getTokenInfo = async () => {
     if (contract && address) {
-      const wethBalanceRaw: BigNumber = await contract.balanceOf(address);
+      // const wethBalanceRaw: BigNumber = await contract.balanceOf(address);
+      const wethBalanceRaw: BigNumber = 0;
       const wethBalance = utils.formatEther(wethBalanceRaw);
       setWethBalance(wethBalance);
     }
