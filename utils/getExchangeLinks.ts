@@ -5,7 +5,7 @@ import {
 } from "../constants/syntheticTokenToExchangeMap";
 
 export const getExchangeInfo = (symbol: string | null) => {
-  const exchangeType = getExchangeTypeFromTokenSymbol(symbol);
+  const exchangeType: any = getExchangeTypeFromTokenSymbol(symbol);
   if (exchangeType !== null) {
     return {
       name: EXCHANGE_NAMES_MAP[exchangeType],
