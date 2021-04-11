@@ -12,15 +12,20 @@ const NETWORK_MAP: NetworkMap = {
   rinkeby: "https://rinkeby.etherscan.io",
   goerli: "https://goerli.etherscan.io",
   mainnet: "https://etherscan.io",
+  unknown: "https://explorer.pops.one/#"
 };
 
 function useEtherscan() {
   const { network } = Connection.useContainer();
 
   const getEtherscanUrl = (hex: string | null) => {
+
     if (!network || !hex || !network.name) {
       return undefined;
     }
+    console.log({
+      network: network.name
+    })
     const baseUrl = NETWORK_MAP[network.name] || NETWORK_MAP["mainnet"];
     // If the length is 66 then the hex is a transaction.
     if (hex.length == 66) {

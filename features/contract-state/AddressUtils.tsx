@@ -74,7 +74,7 @@ const AddressUtils = () => {
             rel="noopener noreferrer"
             startIcon={<LaunchIcon />}
           >
-            View on Etherscan
+            View on Explorer
           </Button>
         </>
       )}

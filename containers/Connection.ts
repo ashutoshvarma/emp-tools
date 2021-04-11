@@ -35,7 +35,7 @@ function useConnection() {
         },
         network: async (networkId: any) => {
           if (!SUPPORTED_NETWORK_IDS.includes(networkId)) {
-            alert("This dApp will work only with the Mainnet or Kovan network");
+            alert("This dApp will work only with the Harmony Testnet");
           }
           onboard?.config({ networkId: networkId });
         },

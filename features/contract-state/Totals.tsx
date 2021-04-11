@@ -147,7 +147,7 @@ const Totals = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Etherscan
+                  Explorer
                 </SmallLink>
               )}
               {getExchangeLinkCollateral !== "" && (
@@ -179,7 +179,7 @@ const Totals = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Etherscan
+                  Explorer
                 </SmallLink>
               )}
 
